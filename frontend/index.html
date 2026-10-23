@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Свяжитесь с нами — заполните контактную форму.">
+    <title>Связаться с нами</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1f2937;
+            background: #f3f5f8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 16px;
+        }
+
+        .page {
+            width: min(100%, 640px);
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            padding: 36px;
+            border: 1px solid #e1e6ed;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 12px 32px rgb(31 41 55 / 8%);
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.7rem, 5vw, 2.1rem);
+        }
+
+        .intro {
+            margin: 0 0 28px;
+            color: #5b6573;
+            line-height: 1.5;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        input,
+        textarea {
+            display: block;
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd3dd;
+            border-radius: 8px;
+            background: #fff;
+            color: #1f2937;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            outline: 3px solid rgb(37 99 235 / 16%);
+        }
+
+        [aria-invalid="true"] {
+            border-color: #c62828;
+        }
+
+        .hint,
+        .error {
+            margin: 6px 0 0;
+            font-size: 0.85rem;
+        }
+
+        .hint {
+            color: #667085;
+        }
+
+        .error {
+            min-height: 1em;
+            color: #b42318;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #1d4ed8;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+
+        .form-status {
+            min-height: 1.5em;
+            margin: 14px 0 0;
+            color: #166534;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .contact-card {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="contact-card" aria-labelledby="form-title">
+            <h1 id="form-title">Связаться с нами</h1>
+            <p class="intro">Заполните форму — мы ответим вам как можно скорее.</p>
+
+            <form id="contact-form" novalidate>
+                <div class="field">
+                    <label for="name">Ваше имя</label>
+                    <input id="name" class="form-input" name="name" type="text"
+                           autocomplete="name" minlength="2" maxlength="60" required
+                           aria-describedby="name-error">
+                    <p class="error" id="name-error" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                    <label for="email">Электронная почта</label>
+                    <input id="email" class="form-input" name="email" type="email"
+                           autocomplete="email" maxlength="254" required
+                           aria-describedby="email-error">
+                    <p class="error" id="email-error" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Телефон</label>
+                    <input id="phone" class="form-input" name="phone" type="tel"
+                           autocomplete="tel" pattern="[+]?[0-9() -]{7,20}" required
+                           aria-describedby="phone-hint phone-error">
+                    <p class="hint" id="phone-hint">Например: +7 (900) 123-45-67</p>
+                    <p class="error" id="phone-error" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                    <label for="subject">Тема обращения</label>
+                    <input id="subject" class="form-input" name="subject" type="text"
+                           minlength="3" maxlength="100" required
+                           aria-describedby="subject-error">
+                    <p class="error" id="subject-error" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" class="form-input" name="message"
+                              minlength="10" maxlength="2000" required
+                              aria-describedby="message-error"></textarea>
+                    <p class="error" id="message-error" aria-live="polite"></p>
+                </div>
+
+                <button type="submit">Отправить сообщение</button>
+                <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+    <script>
+        const form = document.querySelector("#contact-form");
+        const status = document.querySelector("#form-status");
+        const fields = [
+            { input: document.querySelector("#name"), error: document.querySelector("#name-error") },
+            { input: document.querySelector("#email"), error: document.querySelector("#email-error") },
+            { input: document.querySelector("#phone"), error: document.querySelector("#phone-error") },
+            { input: document.querySelector("#subject"), error: document.querySelector("#subject-error") },
+            { input: document.querySelector("#message"), error: document.querySelector("#message-error") }
+        ];
+
+        function validateField(input, error) {
+            let message = "";
+
+            if (input.validity.valueMissing) {
+                message = "Заполните это поле.";
+            } else if (input.validity.typeMismatch) {
+                message = "Введите корректный адрес электронной почты.";
+            } else if (input.validity.patternMismatch) {
+                message = "Введите телефон в указанном формате.";
+            } else if (input.validity.tooShort) {
+                message = `Введите не менее ${input.minLength} символов.`;
+            } else if (input.validity.tooLong) {
+                message = `Допустимо не более ${input.maxLength} символов.`;
+            }
+
+            input.setAttribute("aria-invalid", String(Boolean(message)));
+            error.textContent = message;
+            return message === "";
+        }
+
+        fields.forEach(({ input, error }) => {
+            input.addEventListener("input", () => {
+                validateField(input, error);
+                status.textContent = "";
+            });
+        });
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            status.textContent = "";
+
+            const isValid = fields
+                .map(({ input, error }) => validateField(input, error))
+                .every(Boolean);
+
+            if (!isValid) {
+                const firstInvalidField = fields.find(({ input }) => !input.validity.valid);
+                if (firstInvalidField) {
+                    firstInvalidField.input.focus();
+                }
+                return;
+            }
+
+            status.textContent = "Форма заполнена корректно. Спасибо за обращение!";
+            form.reset();
+            fields.forEach(({ input }) => input.removeAttribute("aria-invalid"));
+        });
+    </script>
+</body>
+</html>
